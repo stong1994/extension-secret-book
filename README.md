@@ -1,25 +1,26 @@
-# ID Extractor
+# Secret Book Extension
 
-ID Extractor is a web browser plugin designed to extract IDs from web URLs.
+The Secret Book Extension is a Chrome extension that fetches account information based on the web URL. This project includes an app made with Flutter and a local server made with Rust.
 
-## Features
+## Table of Contents
 
-- Extracts multiple IDs from a URL using regular expressions.
-- Supports various ID formats:
-  - UUID: e.g., "20a7fa5d-55c5-4364-ae81-46d4472865ab"
-  - UUID Hex: e.g., "20a7fa5d55c54364ae8146d4472865ab"
-  - MongoDB ID: e.g., "6642ce35337ea0f207e4d7a9"
-- If there are multiple id found, we will use ',' to contact them.
+- [App](#app)
+- [Server](#server)
+- [Icon](#icon)
+- [Color](#color)
 
-## Notifications
+## App
 
-The plugin sends a notification after an ID has been copied. This occurs even if no ID was found. Ensure your browser has the necessary permissions to display these notifications.
+The app is part of the Secret Book Extension project and is responsible for fetching and displaying the account information. You can download the app from the [GitHub repository](https://github.com/stong1994/secret_book).
 
-## Shortcuts
+## Server
 
-- Mac users: `Command+B`
-- Windows users: `Ctrl+B`
+The server is another part of the Secret Book Extension project. It's responsible for serving the account information to the app. To use the extension, you need to start a local server. You can download the server from the [GitHub repository](https://github.com/stong1994/secret_book_server).
 
 ## Icon
 
-The plugin's icon was generated using [favicon.io](https://favicon.io/favicon-generator/).
+The icon for the Secret Book Extension was generated using [favicon.io](https://favicon.io/favicon-generator/). It was then converted to an extension icon using [CODITUDE](https://chromewebstore.google.com/detail/chrome-extension-icon-gen/mglkloklhbeedoiaokaoajolaiahfkaf?hl=en).
+
+## Color
+
+The color scheme for the Secret Book Extension was inspired by a palette from [Color Hunt](https://colorhunt.co/palettes).
