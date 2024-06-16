@@ -24,3 +24,7 @@ The icon for the Secret Book Extension was generated using [favicon.io](https://
 ## Color
 
 The color scheme for the Secret Book Extension was inspired by a palette from [Color Hunt](https://colorhunt.co/palettes).
+
+## OTP
+
+The jsOTP.js file is a library for generating OTPs. It was downloaded from [GitHub](https://github.com/jiangts/JS-OTP)
