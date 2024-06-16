@@ -25,5 +25,5 @@
     },
     "default_popup": "popup.html"
   },
-  "permissions": ["scripting", "activeTab", "notifications", "clipboard"]
+  "permissions": ["scripting", "activeTab", "clipboard", "storage"]
 }
