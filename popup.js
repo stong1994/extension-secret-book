@@ -98,21 +98,14 @@ function createGoogleAuth(item, accountsList) {
   li.appendChild(titleDiv);
   // totp
   var totp = new jsOTP.totp();
-  var timeCode = totp.getOtp(item.content);
+  let [code, leftTime] = totp.getOtp(item.content);
 
   // Create a div for the Google Authenticator code
-  var codeDiv = createDivWithButton(
-    "Google Auth Code: " + timeCode,
-    "Copy",
-    function () {
-      navigator.clipboard.writeText(timeCode);
-    },
-  );
-  li.appendChild(codeDiv);
+  var googleAuthDiv = createGoogleAuthDiv(code, leftTime);
+  li.appendChild(googleAuthDiv);
 
   var commentDiv = createDivWithButton("Comment: " + item.desc, "", null);
   li.appendChild(commentDiv);
-
   // Append the list item to the list
   accountsList.appendChild(li);
 }
@@ -126,11 +119,63 @@ function createDivWithButton(text, buttonText, buttonClickCallback) {
     button.textContent = buttonText;
     button.addEventListener("click", function () {
       buttonClickCallback();
-      this.style.backgroundColor = "#FF7F3E"; // Change the color of the button to #536626
-      setTimeout(() => (this.style.backgroundColor = ""), 500); // Change it back after 2 seconds
+      this.style.backgroundColor = "#FF7F3E";
+      setTimeout(() => (this.style.backgroundColor = ""), 300);
     });
     div.appendChild(button);
   }
 
   return div;
+}
+
+function googleAuthText(codeSpan) {
+  return function (leftTime) {
+    return `Google Auth Code: ${codeSpan}, ${leftTime}s`;
+  };
+}
+
+function createGoogleAuthDiv(code, leftTime) {
+  var div = document.createElement("div");
+
+  var codeSpan = document.createElement("span");
+  codeSpan.textContent = code;
+  codeSpan.style.color = "green";
+  codeSpan.style.fontWeight = "bold";
+  codeSpan.style.fontSize = "20px";
+
+  var textSpan = document.createElement("span");
+  var textFn = googleAuthText(codeSpan.outerHTML);
+  textSpan.innerHTML = textFn(leftTime);
+  div.appendChild(textSpan);
+
+  var button = document.createElement("button");
+  button.textContent = "Copy";
+  button.addEventListener("click", function () {
+    navigator.clipboard.writeText(code.toString());
+    this.style.backgroundColor = "#FF7F3E";
+    setTimeout(() => (this.style.backgroundColor = ""), 300);
+  });
+  div.appendChild(button);
+
+  startCountdown(textSpan, leftTime, textFn, button);
+  return div;
+}
+
+function startCountdown(textSpan, seconds, textFn, button) {
+  let counter = seconds;
+
+  // Update the count down every 1 second
+  var interval = setInterval(function () {
+    counter--;
+
+    textSpan.innerHTML = textFn(counter);
+
+    // If the count down is over, clear the interval
+    if (counter < 0) {
+      clearInterval(interval);
+      textSpan.innerHTML = "EXPIRED";
+      textSpan.style.color = "red";
+      button.style.display = "none";
+    }
+  }, 1000);
 }
