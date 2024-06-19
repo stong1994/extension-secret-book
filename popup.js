@@ -1,36 +1,30 @@
 window.onload = function () {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    var url = new URL(tabs[0].url);
-    var host = url.hostname;
-    chrome.storage.local.get(["serverHost"], function (result) {
-      var serverHost = result.serverHost;
-      console.log("serverHost:", serverHost);
-      fetch(`${serverHost}/fetch_state?host=${encodeURIComponent(host)}`)
-        .then((response) => response.json())
-        .then((data) => {
-          var accountsList = document.getElementById("accounts");
-          accountsList.innerHTML = ""; // Clear the list
+  var accountsList = document.getElementById("accounts");
+  accountsList.innerHTML = ""; // Clear the list
 
-          data.forEach((item) => {
-            if (item.content) {
-              switch (item.data_type) {
-                case "account":
-                  createAccount(item, accountsList);
-                  break;
-                case "token":
-                  createToken(item, accountsList);
-                  break;
-                case "google_auth":
-                  createGoogleAuth(item, accountsList);
-                  break;
-                default:
-                  console.log("invalid data type: " + item.data_type);
-              }
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }).then((tabs) => {
+    if (tabs[0] && tabs[0].id) {
+      chrome.storage.local.get(tabs[0].id.toString(), function (result) {
+        var data = result[tabs[0].id.toString()];
+        data.forEach((item) => {
+          if (item.content) {
+            switch (item.data_type) {
+              case "account":
+                createAccount(item, accountsList);
+                break;
+              case "token":
+                createToken(item, accountsList);
+                break;
+              case "google_auth":
+                createGoogleAuth(item, accountsList);
+                break;
+              default:
+                console.log("invalid data type: " + item.data_type);
             }
-          });
-        })
-        .catch((error) => console.log("Error:", error));
-    });
+          }
+        });
+      });
+    }
   });
 };
 
