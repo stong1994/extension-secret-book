@@ -7,6 +7,7 @@ var usernameSelectors = [
   'input[placeholder="email"]',
   'input[placeholder="mobile"]',
   'input[name="username"]',
+  'input[placeholder="用户名"]',
 ];
 
 function autofill() {
@@ -27,7 +28,7 @@ function autofill() {
   var filled = false;
 
   chrome.runtime.sendMessage({ type: "getTabId" }, function (response) {
-    console.log("get response "+response);
+    console.log("get response " + response);
     if (chrome.runtime.lastError) {
       // There was an error, don't try to use the tabId
       console.log(chrome.runtime.lastError.message);
