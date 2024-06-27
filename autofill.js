@@ -10,6 +10,8 @@ var usernameSelectors = [
   'input[placeholder="用户名"]',
 ];
 
+var googleAuthSelectors = ['input[name="otp_code"', 'input[name="code"'];
+
 function autofill() {
   var usernameFieldSelector = usernameSelectors.find((selector) =>
     document.querySelector(selector),
@@ -18,7 +20,13 @@ function autofill() {
     ? document.querySelector(usernameFieldSelector)
     : null;
   var passwordField = document.querySelector('input[type="password"]');
-  var codeField = document.querySelector('input[name="code"]');
+
+  var codeFieldSelector = googleAuthSelectors.find((selector) =>
+    document.querySelector(selector),
+  );
+  var codeField = codeFieldSelector
+    ? document.querySelector(codeFieldSelector)
+    : null;
   var tokenField = document.querySelector('input[name="token"]');
 
   if (!usernameField && !passwordField && !codeField && !tokenField) {
@@ -69,7 +77,9 @@ function autofill() {
               break;
             case "google_auth":
               if (codeField && codeField.value === "") {
-                codeField.value = item.content;
+                var totp = new jsOTP.totp();
+                let [code, _] = totp.getOtp(item.content);
+                codeField.value = code;
                 filled = true;
               }
               break;
